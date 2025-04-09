@@ -4,18 +4,22 @@ import "@/once-ui/tokens/index.scss";
 import classNames from "classnames";
 import { headers } from "next/headers";
 
-import { baseURL, meta, og, schema, style } from "@/app/resources/config";
-import { Background, Column, Flex, ThemeProvider, ToastProvider } from "@/once-ui/components";
-import { Meta, Schema } from "@/once-ui/modules";
+import { Header} from "../components/Header";
+import { Footer } from "../components/Footer";
 
+import { baseURL, style, effects } from "../app/resources";
+import { Background, Column, Flex, ToastProvider } from "../once-ui/components";
+
+import { person, home } from "../app/resources/content";
 import { Geist } from "next/font/google";
 import { Geist_Mono } from "next/font/google";
+import React from "react";
 
 const primary = Geist({
   variable: "--font-primary",
   subsets: ["latin"],
   display: "swap",
-});
+}); 
 
 const code = Geist_Mono({
   variable: "--font-code",
@@ -37,13 +41,30 @@ const tertiary: FontConfig | undefined = undefined;
  */
 
 export async function generateMetadata() {
-  return Meta.generate({
-    title: meta.title,
-    description: meta.description,
-    baseURL,
-    path: "/",
-    image: og.image
-  });
+  return {
+    metadataBase: new URL(`https://${baseURL}`),
+    title: home.title,
+    description: home.description,
+    openGraph: {
+      title: `${person.firstName}'s Portfolio`,
+      description: "Portfolio website showcasing my work.",
+      url: baseURL,
+      siteName: `${person.firstName}'s Portfolio`,
+      locale: "en_US",
+      type: "website",
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+  };
 }
 
 export default function RootLayout({
@@ -74,15 +95,7 @@ export default function RootLayout({
         tertiary ? tertiary.variable : "",
       )}
     >
-      <Schema
-        as="organization"
-        title={schema.name}
-        description={schema.description}
-        baseURL={baseURL}
-        path="/"
-        image={schema.logo}
-      />
-      <head>
+      {/* <head>
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -103,40 +116,74 @@ export default function RootLayout({
             `,
           }}
         />
-      </head>
-      <ThemeProvider>
-        <ToastProvider>
-          <Column as="body" fillWidth margin="0" padding="0">
-            <Background
-              position="absolute"
-              mask={{
-                x: 100,
-                y: 0,
-                radius: 100,
-              }}
-              gradient={{
-                display: true,
-                x: 100,
-                y: 60,
-                width: 70,
-                height: 50,
-                tilt: -40,
-                opacity: 90,
-                colorStart: "accent-background-strong",
-                colorEnd: "page-background",
-              }}
-              grid={{
-                display: true,
-                opacity: 100,
-                width: "0.25rem",
-                color: "neutral-alpha-medium",
-                height: "0.25rem",
-              }}
-            />
-            {children}
-          </Column>
-        </ToastProvider>
-      </ThemeProvider>
+      </head> */}
+      <ToastProvider>
+        <Column style={{ minHeight: "100vh" }} as="body" fillWidth margin="0" padding="0">
+          <Background
+            mask={{
+              cursor: effects.mask.cursor,
+              x: effects.mask.x,
+              y: effects.mask.y,
+              radius: effects.mask.radius,
+            }}
+            gradient={{
+              display: effects.gradient.display,
+              x: effects.gradient.x,
+              y: effects.gradient.y,
+              width: effects.gradient.width,
+              height: effects.gradient.height,
+              tilt: effects.gradient.tilt,
+              colorStart: effects.gradient.colorStart,
+              colorEnd: effects.gradient.colorEnd,
+              opacity: effects.gradient.opacity as
+                | 0
+                | 10
+                | 20
+                | 30
+                | 40
+                | 50
+                | 60
+                | 70
+                | 80
+                | 90
+                | 100,
+            }}
+            dots={{
+              display: effects.dots.display,
+              color: effects.dots.color,
+              size: effects.dots.size as any,
+              opacity: effects.dots.opacity as any,
+            }}
+            grid={{
+              display: effects.grid.display,
+              color: effects.grid.color,
+              width: effects.grid.width as any,
+              height: effects.grid.height as any,
+              opacity: effects.grid.opacity as any,
+            }}
+            lines={{
+              display: effects.lines.display,
+              opacity: effects.lines.opacity as any,
+            }}
+          />
+          <Flex fillWidth minHeight="16"></Flex>
+          <Header />
+          <Flex
+            position="relative"
+            zIndex={0}
+            fillWidth
+            paddingY="l"
+            paddingX="l"
+            horizontal="center"
+            flex={1}
+          >
+            <Flex horizontal="center" fillWidth minHeight="0">
+              {children}
+            </Flex>
+          </Flex>
+          <Footer />
+        </Column>
+      </ToastProvider>
     </Flex>
   );
 }

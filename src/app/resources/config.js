@@ -1,4 +1,14 @@
-const baseURL = "demo.once-ui.com";
+const baseURL = "rudikarakelyan.com";
+
+
+const routes = {
+  "/": true,
+  "/about": true,
+  "/projects": true,
+  "/skills": true,
+  
+};
+
 
 // default customization applied to the HTML in the main layout.tsx
 const style = {
@@ -16,13 +26,13 @@ const style = {
 
 const effects = {
   mask: {
-    cursor: false,
-    x: 50,
+    cursor: true,
+    x: 0,
     y: 0,
-    radius: 100,
+    radius: 75,
   },
   gradient: {
-    display: false,
+    display: true,
     x: 50,
     y: 0,
     width: 100,
@@ -52,6 +62,11 @@ const effects = {
   },
 };
 
+const display = {
+  location: true,
+  time: true,
+};
+
 // default metadata
 const meta = {
   title: "Once UI for Next.js",
@@ -70,9 +85,9 @@ const og = {
 const schema = {
   logo: "",
   type: "Organization",
-  name: "Once UI",
+  name: "Rudik Arakelyan",
   description: meta.description,
-  email: "lorant@once-ui.com",
+  email: "rudik.arakelyan777@gmail.com",
 };
 
 // social links
@@ -82,4 +97,4 @@ const social = {
   discord: "https://discord.com/invite/5EyAQ4eNdS",
 };
 
-export { baseURL, style, meta, og, schema, social, effects };
+export { routes, baseURL, style, display, meta, og, schema, social, effects };
